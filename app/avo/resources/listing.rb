@@ -33,4 +33,8 @@ class Avo::Resources::Listing < Avo::BaseResource
       }
     }
   }
+
+  def actions
+    action Avo::Actions::TakeScreenshot
+  end
 end
