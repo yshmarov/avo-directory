@@ -64,3 +64,5 @@ end
 gem "avo", ">= 3.2"
 
 gem "ferrum", "~> 0.15"
+
+gem "ransack", "~> 4.2"

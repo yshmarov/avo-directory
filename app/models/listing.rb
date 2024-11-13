@@ -10,4 +10,16 @@ class Listing < ApplicationRecord
   def attach_screenshot
     AttachScreenshotJob.perform_later self
   end
+
+  def self.ransackable_attributes auth_object = nil
+    %w[name description url]
+  end
+
+  def self.ransackable_associations auth_object = nil
+    []
+  end
+
+  def computed_title
+    name.presence || url
+  end
 end
