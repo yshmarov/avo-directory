@@ -4,9 +4,15 @@ class AttachScreenshotJob < ApplicationJob
   def perform(record)
     url = record.url
 
-    browser = Ferrum::Browser.new
+    browser = Ferrum::Browser.new(
+      headless: true,
+      process_timeout: 30,
+      timeout: 200,
+      pending_connection_errors: true
+    )
     browser.resize(width: 1200, height: 630)
     browser.goto(url)
+    sleep(0.3)
     browser.network.wait_for_idle
 
     tempfile = Tempfile.new
