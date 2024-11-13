@@ -62,3 +62,5 @@ group :test do
   gem "selenium-webdriver"
 end
 gem "avo", ">= 3.2"
+
+gem "ferrum", "~> 0.15"
