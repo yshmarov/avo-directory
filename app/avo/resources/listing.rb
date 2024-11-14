@@ -1,4 +1,11 @@
 class Avo::Resources::Listing < Avo::BaseResource
+  # self.record_selector = false
+  # self.keep_filters_panel_open = true
+  # self.index_query = -> { query.unscoped }
+
+  # self.default_sort_column = :last_name
+  # self.default_sort_direction = :asc
+
   self.controls_placement = :left
   self.default_view_type = :grid
   self.title = :computed_title
