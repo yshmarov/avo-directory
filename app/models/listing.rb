@@ -5,10 +5,11 @@ class Listing < ApplicationRecord
     attachable.variant :opengraph, resize: "1200x630^", gravity: "center", extent: "1200x630"
   end
 
-  after_update_commit :attach_screenshot, if: -> { saved_change_to_url? }
+  after_update_commit :crawl, if: -> { saved_change_to_url? }
 
-  def attach_screenshot
+  def crawl
     AttachScreenshotJob.perform_later self
+    HomepageCrawlerJob.perform_later self
   end
 
   def self.ransackable_attributes auth_object = nil
