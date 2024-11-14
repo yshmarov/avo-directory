@@ -1,4 +1,5 @@
 class Avo::Resources::Listing < Avo::BaseResource
+  self.controls_placement = :left
   self.default_view_type = :grid
   self.title = :computed_title
 
