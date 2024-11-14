@@ -18,23 +18,59 @@ class Avo::Resources::Listing < Avo::BaseResource
 
   def fields
     # field :id, as: :id
-    field :website_screenshot, as: :file, is_image: true, max_file_size: 3.megabytes
-    field :name, as: :text
-    field :description, as: :textarea
-    field :url, as: :textarea
+    # field :name, as: :text
+    # field :description, as: :textarea
+    field :url, as: :text
+    field :website_screenshot, as: :file, is_image: true, max_file_size: 3.megabytes, hide_on: [:show]
+
+    field :title, as: :text, as_html: true do
+      record.payload&.dig('page_title')
+    end
+    field :details, as: :text, as_html: true do
+      record.payload&.dig('meta_description')
+    end
+
+    field :payload, as: :textarea, hide_on: :forms
   end
 
   self.grid_view = {
     card: lambda {
       {
         cover_url: (main_app.url_for(record.website_screenshot.url) if record.website_screenshot.attached?),
-        title: record.name,
-        body: record.url.gsub(/https?:\/\//, '').gsub(/\/$/, '')
+        title: [record.clean_url, record.payload&.dig('page_title')].compact.join(' - '),
+        body: record.payload&.dig('meta_description'),
       }
     }
   }
 
   def actions
     action Avo::Actions::TakeScreenshot
+    action Avo::Actions::CrawlUrl
   end
+
+  self.profile_photo = {
+    source: -> {
+      if view.index?
+        # We're on the index page and don't have a record to reference
+        '/icon.png'
+      else
+        # We have a record so we can reference it's profile_photo
+        record.payload&.dig('favicon_url') || '/icon.png'
+      end
+    }
+  }
+
+  self.cover_photo = {
+    size: :md, # :sm, :md, :lg
+    visible_on: [:show], # can be :show, :index, :edit, or a combination [:show, :index]
+    source: -> {
+      if view.index?
+        # We're on the index page and don't have a record to reference
+        '/icon.png'
+      else
+        # We have a record so we can reference it's cover_photo
+        record.website_screenshot
+      end
+    }
+  }
 end

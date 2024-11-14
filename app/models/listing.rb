@@ -21,6 +21,10 @@ class Listing < ApplicationRecord
   end
 
   def computed_title
-    name.presence || url
+    name.presence || clean_url
+  end
+
+  def clean_url
+    url.gsub(/https?:\/\//, '').gsub(/\/$/, '').gsub(/^www\./, '')
   end
 end
