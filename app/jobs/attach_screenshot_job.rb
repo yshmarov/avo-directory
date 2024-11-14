@@ -13,7 +13,7 @@ class AttachScreenshotJob < ApplicationJob
     browser.resize(width: 1200, height: 630)
     browser.goto(url)
     sleep(0.3)
-    browser.network.wait_for_idle
+    # browser.network.wait_for_idle
 
     tempfile = Tempfile.new
     browser.screenshot(path: tempfile.path, quality: 40, format: 'jpg')
