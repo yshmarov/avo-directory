@@ -16,8 +16,12 @@ class Listing < ApplicationRecord
     HomepageCrawlerJob.perform_later self
   end
 
+  ransacker :payload do
+    Arel.sql("payload")
+  end
+
   def self.ransackable_attributes(auth_object = nil)
-    %w[name description url]
+    %w[name description url payload]
   end
 
   def self.ransackable_associations(auth_object = nil)

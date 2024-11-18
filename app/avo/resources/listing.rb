@@ -15,6 +15,7 @@ class Avo::Resources::Listing < Avo::BaseResource
     query.ransack(name_cont: params[:q],
                   description_cont: params[:q],
                   url_cont: params[:q],
+                  payload_cont: params[:q],
                   m: "or").result(distinct: false) },
                   item: -> do
                     {
