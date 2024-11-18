@@ -5,6 +5,8 @@ class Avo::Resources::CategoryListing < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   # }
 
+  self.visible_on_sidebar = false
+
   def fields
     field :id, as: :id
     field :category, as: :belongs_to
