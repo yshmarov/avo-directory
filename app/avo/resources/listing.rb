@@ -38,7 +38,10 @@ class Avo::Resources::Listing < Avo::BaseResource
     end
 
     field :payload, as: :textarea, hide_on: :forms
-    field :categories, as: :has_many
+    field :categories, as: :has_many, through: :category_listings,
+                  attach_scope: lambda {
+                                  query.where.not(id: parent.category_listings.select(:category_id))
+                                }
   end
 
   self.grid_view = {
