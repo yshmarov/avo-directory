@@ -1,6 +1,6 @@
-require 'nokogiri'
-require 'open-uri'
-require 'uri'
+require "nokogiri"
+require "open-uri"
+require "uri"
 
 class HomepageCrawlerJob < ApplicationJob
   queue_as :default
@@ -14,17 +14,17 @@ class HomepageCrawlerJob < ApplicationJob
     doc = Nokogiri::HTML(html)
 
     # Extract the page title
-    page_title = doc.at('title')&.text
+    page_title = doc.at("title")&.text
 
     # Extract the favicon URL
     favicon = doc.at('link[rel="icon"]') || doc.at('link[rel="shortcut icon"]')
-    favicon_url = favicon ? URI.join(url, favicon['href']).to_s : nil
+    favicon_url = favicon ? URI.join(url, favicon["href"]).to_s : nil
 
     # Extract the meta description
-    meta_description = doc.at('meta[name="description"]')&.[]('content')
+    meta_description = doc.at('meta[name="description"]')&.[]("content")
 
     # Extract the OpenGraph image
-    og_image = doc.at('meta[property="og:image"]')&.[]('content')
+    og_image = doc.at('meta[property="og:image"]')&.[]("content")
     og_image_url = og_image ? URI.join(url, og_image).to_s : nil
 
     data = {

@@ -15,10 +15,10 @@ class Avo::Resources::Listing < Avo::BaseResource
     query.ransack(name_cont: params[:q],
                   description_cont: params[:q],
                   url_cont: params[:q],
-                  m: 'or').result(distinct: false) },
+                  m: "or").result(distinct: false) },
                   item: -> do
                     {
-                      title: record.computed_title,
+                      title: record.computed_title
                     }
                   end
   }
@@ -28,13 +28,13 @@ class Avo::Resources::Listing < Avo::BaseResource
     # field :name, as: :text
     # field :description, as: :textarea
     field :url, as: :text
-    field :website_screenshot, as: :file, is_image: true, max_file_size: 3.megabytes, hide_on: [:show]
+    field :website_screenshot, as: :file, is_image: true, max_file_size: 3.megabytes, hide_on: [ :show ]
 
     field :title, as: :text, as_html: true do
-      record.payload&.dig('page_title')
+      record.payload&.dig("page_title")
     end
     field :details, as: :text, as_html: true do
-      record.payload&.dig('meta_description')
+      record.payload&.dig("meta_description")
     end
 
     field :payload, as: :textarea, hide_on: :forms
@@ -48,8 +48,8 @@ class Avo::Resources::Listing < Avo::BaseResource
     card: lambda {
       {
         cover_url: (main_app.url_for(record.website_screenshot.url) if record.website_screenshot.attached?),
-        title: [record.clean_url, record.payload&.dig('page_title')].compact.join(' - '),
-        body: record.payload&.dig('meta_description'),
+        title: [ record.clean_url, record.payload&.dig("page_title") ].compact.join(" - "),
+        body: record.payload&.dig("meta_description")
       }
     }
   }
@@ -63,21 +63,21 @@ class Avo::Resources::Listing < Avo::BaseResource
     source: -> {
       if view.index?
         # We're on the index page and don't have a record to reference
-        '/icon.png'
+        "/icon.png"
       else
         # We have a record so we can reference it's profile_photo
-        record.payload&.dig('favicon_url') || '/icon.png'
+        record.payload&.dig("favicon_url") || "/icon.png"
       end
     }
   }
 
   self.cover_photo = {
     size: :md, # :sm, :md, :lg
-    visible_on: [:show], # can be :show, :index, :edit, or a combination [:show, :index]
+    visible_on: [ :show ], # can be :show, :index, :edit, or a combination [:show, :index]
     source: -> {
       if view.index?
         # We're on the index page and don't have a record to reference
-        '/icon.png'
+        "/icon.png"
       else
         # We have a record so we can reference it's cover_photo
         record.website_screenshot

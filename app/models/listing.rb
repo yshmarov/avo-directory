@@ -16,11 +16,11 @@ class Listing < ApplicationRecord
     HomepageCrawlerJob.perform_later self
   end
 
-  def self.ransackable_attributes auth_object = nil
+  def self.ransackable_attributes(auth_object = nil)
     %w[name description url]
   end
 
-  def self.ransackable_associations auth_object = nil
+  def self.ransackable_associations(auth_object = nil)
     []
   end
 
@@ -29,6 +29,6 @@ class Listing < ApplicationRecord
   end
 
   def clean_url
-    url.gsub(/https?:\/\//, '').gsub(/\/$/, '').gsub(/^www\./, '')
+    url.gsub(/https?:\/\//, "").gsub(/\/$/, "").gsub(/^www\./, "")
   end
 end
