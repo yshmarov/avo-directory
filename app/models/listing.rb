@@ -8,6 +8,7 @@ class Listing < ApplicationRecord
   has_many :category_listings, dependent: :destroy
   has_many :categories, through: :category_listings
 
+  after_create_commit :crawl
   after_update_commit :crawl, if: -> { saved_change_to_url? }
 
   def crawl
