@@ -5,6 +5,9 @@ class Listing < ApplicationRecord
     attachable.variant :opengraph, resize: "1200x630^", gravity: "center", extent: "1200x630"
   end
 
+  has_many :category_listings, dependent: :destroy
+  has_many :categories, through: :category_listings
+
   after_update_commit :crawl, if: -> { saved_change_to_url? }
 
   def crawl

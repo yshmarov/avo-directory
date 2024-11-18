@@ -38,6 +38,7 @@ class Avo::Resources::Listing < Avo::BaseResource
     end
 
     field :payload, as: :textarea, hide_on: :forms
+    field :categories, as: :has_many
   end
 
   self.grid_view = {
